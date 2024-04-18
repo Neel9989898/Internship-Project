@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-import numpy as np
+import numpy as npk
 import lxml
-
+url="https://www.amazon.in/Logitech-G512-Mechanical-Keyboard-Black/dp/B07BVCSRXL"
 headers_param={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 OPR/72.0.3815.378"}
-r = requests.get("https://www.amazon.in/Apple-MacBook-Chip-13-inch-256GB/dp/B08N5T6CZ6/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.0wUJxkajdW_AXocIRrc54ysXU75fq8Y4zSe_afkYWsLDtC-yfdnogJsxNFHjtyZRizyAoygfaQDRD15ZqimDaEo67YZ0msPlW77FWQVjmG0zQG2APt3nLqU7X05tVexXHfeYTirgNg999Ec7A6old5ZfDqv1ZNcWx2VTozoifLTSMuz8SqKc8gHbGfckDLTubm7FJMsYcrkT5JeyWqQegpPZDYopxXySmT0zetW8zUs.SvYOrXL1QDdhSR0K9zaTBrO0QWJNcwipJaTeipAlSYw&dib_tag=se&keywords=macbook&qid=1713349039&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",headers=headers_param)
+r = requests.get(url,headers=headers_param)
 soup = BeautifulSoup(r.content,"lxml")
 # print(soup.prettify())
 
@@ -20,7 +20,7 @@ if price:
     match = re.search(r'(\D*)([\d,.]+)\s*(\w+)', price_text)
     if match:
         price_with_currency = match.group(1) + match.group(2) + ' ' + match.group(3)
-        print("Price with currency:", price_with_currency[0:-4])
+        # print("Price with currency:", price_with_currency[0:-4])
     else:
         print("Price format not recognized")
 else:
@@ -32,7 +32,7 @@ else:
 description = soup.find("span", attrs={"id": "productTitle"})
 if description:
     description = description.text.strip()
-    print(f"Description : ${description} \nPrice : ${price_with_currency[0:-4]}")
+    print(f"Description : {description} \nPrice : {price_with_currency[0:-4]}")
 else:
     print("Description not found")
 
@@ -51,3 +51,26 @@ if reviews:
     print("Number of Reviews:", reviews)
 else:
     print("Number of Reviews not found")
+
+
+
+images = soup.find_all("img", attrs={"class": "a-dynamic-image"})
+if images:
+    for image in images:
+        src = image["src"]
+        print("Image URL:", src)
+else:
+    print("Product images not found")
+
+
+specifications = soup.find("div", attrs={"id": "productOverview_feature_div"})
+if specifications:
+    rows = specifications.find_all("tr")
+    for row in rows:
+        cells = row.find_all("td")
+        if cells:
+            key = cells[0].text.strip()
+            value = cells[1].text.strip()
+            print(key, ":", value)
+else:
+    print("Product specifications not found")
