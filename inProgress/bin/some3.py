@@ -48,6 +48,7 @@ for feature in features:
         value = value.text.strip()
     if key and value:
         print(key, ":", value)
+        
 
 # Extract the customer ratings
 ratings = soup.find("span", attrs={"id": "acrCustomerReviewText"})
