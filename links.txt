@@ -1,2 +1,7 @@
 https://www.blog.datahut.co/post/ecommerce-data-sources-to-scrape
 
+
+
+web hooks 
+web crawling 
+and 
