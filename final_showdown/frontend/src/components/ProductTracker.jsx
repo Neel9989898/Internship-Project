@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import './ProductTracker.css'; // Import CSS file for styling
 
 function ProductTracker() {
     const [url, setUrl] = useState('');
@@ -24,28 +25,41 @@ function ProductTracker() {
     };
 
     return (
-        <div>
-            <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
-            <button onClick={fetchData} disabled={loading}>Fetch Data</button>
+        <div className="product-tracker-container">
+            <h1>Product Tracker</h1>
+            <div className="input-section">
+                <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Enter Product URL" />
+                <button onClick={fetchData} disabled={loading}>Fetch Data</button>
+            </div>
             {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
+            {error && <p className="error-message">Error: {error}</p>}
             {data && (
-                <div>
-                    <h2>{data.description}</h2>
-                    <p>Price: {data.price}</p>
-                    <p>Customer Ratings: {data.customer_ratings}</p>
-                    <p>Number of Reviews: {data.number_of_reviews}</p>
-                    <p>Specifications:</p>
-                    <ul>
-                        {Object.entries(data.specifications).map(([key, value]) => (
-                            <li key={key}>{key}: {value}</li>
-                        ))}
-                    </ul>
-                    <div>
-                        {data.image_urls.map((imageUrl, index) => (
-                            <img key={index} src={imageUrl} alt={`Product ${index + 1}`} />
-                        ))}
+                <div className="product-details">
+                    <div className='for-flex'>
+                    <div className="image-gallery">
+                        <h3>Product Images:</h3>
+                        <div className="images">
+                            {data.image_urls.map((imageUrl, index) => (
+                                <img key={index} src={imageUrl} alt={`Product ${index + 1}`} />
+                            ))}
+                        </div>
                     </div>
+                    <h2>{data.description}</h2>
+                    </div>
+                    <div className="details-section">
+                        <p className="price">Price: {data.price}</p>
+                        <p className="customer-ratings">Customer Ratings: {data.customer_ratings}</p>
+                        <p className="number-of-reviews">Number of Reviews: {data.number_of_reviews}</p>
+                    </div>
+                    <div className="specifications">
+                        <h3>Specifications:</h3>
+                        <ul>
+                            {Object.entries(data.specifications).map(([key, value]) => (
+                                <li key={key}>{key}: {value}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    
                 </div>
             )}
         </div>

@@ -21,7 +21,7 @@ def scrape_product():
         soup = BeautifulSoup(r.content, "lxml")
 
         # Extracting price
-        price = soup.find("span", attrs={"class": "aok-offscreen"})
+        price = soup.find("span", attrs={"class": "aok-offscreen"}) or soup.find("span", attrs={"class": "a-offscreen"})
         if price:
             price_text = price.text.strip()
             match = re.search(r'(\D*)([\d,.]+)\s*(\w+)', price_text)
@@ -51,7 +51,7 @@ def scrape_product():
         # Extracting images
         images = soup.find_all("img", attrs={"class": "a-dynamic-image"})
         image_urls = [image["src"] for image in images] if images else ["Product images not found"]
-
+        image_urls = image_urls[:2]
         # Extracting specifications
         specifications = soup.find("div", attrs={"id": "productOverview_feature_div"})
         specifications = specifications.find_all("tr") if specifications else []
