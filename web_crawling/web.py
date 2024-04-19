@@ -70,7 +70,7 @@ class AmazonSpider(scrapy.Spider):
 
         yield {
             "Description": description,
-            "Price": price_with_currency,
+            "Price": price_with_currency[0:-4],
             "Customer Ratings": ratings,
             "Number of Reviews": reviews,
             "Image URLs": image_urls,
